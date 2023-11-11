@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
+    id("org.jetbrains.kotlin.kapt")
+
 }
 
 
@@ -11,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.bignerdranch.android.criminalintent"
-        minSdk = 21
+        minSdk = 18
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
