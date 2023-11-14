@@ -1,6 +1,7 @@
 package com.bignerdranch.android.criminalintent
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.bignerdranch.android.criminalintent.database.CrimeDatabase
 import java.util.UUID
@@ -18,10 +19,11 @@ constructor(context: Context) {
 
     private val crimeDao = database.crimeDao()
 
-    fun getCrimes(): List<Crime> =
+    fun getCrimes(): LiveData<List<Crime>> =
         crimeDao.getCrimes()
-    fun getCrime(id: UUID): Crime? =
+    fun getCrime(id: UUID): LiveData<Crime?> =
         crimeDao.getCrime(id)
+
 
 
     companion object {
