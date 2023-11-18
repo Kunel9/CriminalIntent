@@ -1,5 +1,6 @@
 package com.bignerdranch.android.criminalintent
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,9 +14,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.UUID
 
 private const val TAG = "CrimeListFragment"
 class CrimeListFragment : Fragment() {
+    /**
+     * Требуемый интерфейс
+     */
+    interface Callbacks {
+        fun onCrimeSelected(crimeId: UUID)
+    }
+    private var callbacks: Callbacks? = null
     private lateinit var crimeRecyclerView: RecyclerView
     private var adapter: CrimeAdapter? =
         CrimeAdapter(emptyList())
@@ -24,6 +33,11 @@ class CrimeListFragment : Fragment() {
             CrimeListViewModel by lazy {
         ViewModelProviders.of(this).get(CrimeListViewModel::class.java)
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,6 +69,12 @@ class CrimeListFragment : Fragment() {
                 }
             })
     }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
+    }
+
 
     private fun updateUI(crimes: List<Crime>) {
 
@@ -90,9 +110,7 @@ class CrimeListFragment : Fragment() {
         }
 
         override fun onClick(v: View) {
-            Toast.makeText(context, "${crime.title} pressed!"
-                , Toast.LENGTH_SHORT)
-                .show()
+            callbacks?.onCrimeSelected(crime.id)
         }
 
     }
